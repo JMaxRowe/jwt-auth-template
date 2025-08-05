@@ -7,6 +7,18 @@ import { generateToken } from '../utils/tokens.js'
 const router = express.Router()
 
 router.post('/sign-up', async (req, res, next) =>{
+    try {
+        if (req.body.password !== req.body.passwordConfirmation) {
+            throw new InvalidData('Passwords do not match.', 'password')
+    }
+
+    const newUser = await User.create(req.body)
+
+    const token = generateToken(newUser)
+    return res.status(201).json({ token: token })
+    } catch (error) {
+        next(error)
+    }
 
 })
 

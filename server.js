@@ -3,8 +3,17 @@ import 'dotenv/config'
 import morgan from 'morgan'
 import mongoose from 'mongoose'
 
+
+import userRouter from './controllers/users.js'
+
 const app = express()
 const port = process.env.PORT || 3000
+
+
+app.use(express.json())
+app.use(morgan('dev'))
+
+app.use('/api/auth', userRouter)
 
 const startServers = async () => {
     try {
