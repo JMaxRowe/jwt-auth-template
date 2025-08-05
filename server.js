@@ -6,6 +6,10 @@ import mongoose from 'mongoose'
 
 import userRouter from './controllers/users.js'
 
+import notFoundHandler from './middleware/notFoundHandler.js'
+import errorHandler from './middleware/errorHandler.js'
+import verifyToken from './middleware/verifyToken.js'
+
 const app = express()
 const port = process.env.PORT || 3000
 
@@ -13,7 +17,15 @@ const port = process.env.PORT || 3000
 app.use(express.json())
 app.use(morgan('dev'))
 
+app.get('/protected-route', verifyToken, (req, res, next) => {
+    return res.json({ message: 'HIT PROTECTED ROUTE' })
+})
+
 app.use('/api/auth', userRouter)
+
+app.use(notFoundHandler)
+
+app.use(errorHandler)
 
 const startServers = async () => {
     try {
