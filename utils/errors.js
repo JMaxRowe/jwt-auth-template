@@ -9,8 +9,9 @@ export class InvalidData extends Error{
 }
 
 export class Unauthorized extends Error{
-    constructor (message, field){
+    constructor (message){
         super(message)
-        
+        this.name = 'Unauthorized'
+        this.status = 401
     }
 }
